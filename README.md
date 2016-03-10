@@ -138,4 +138,3 @@ Where `config/` contains your `php.ini` file.
 [1]: http://http://php.net/
 [2]: https://laravel.com
 [3]: http://httpd.apache.org
-
