@@ -46,10 +46,10 @@ RUN docker-php-ext-install \
 This image includes multiple `ONBUILD` triggers which should cover most Laravel applications.
 The build will:
 
-* `ONBUILD COPY . /var/www/html`
-* `ONBUILD RUN rm -Rf vendor/`
-* `ONBUILD RUN rm -Rf tests/`
+* `ONBUILD COPY composer.json composer.lock /var/www/html`
 * `ONBUILD RUN composer install --prefer-dist --optimize-autoloader --no-dev --profile -vvv`
+* `ONBUILD COPY . /var/www/html`
+* `ONBUILD RUN rm -Rf tests/`
 * `ONBUILD RUN php artisan clear-compiled`
 * `ONBUILD RUN php artisan optimize`
 * `ONBUILD RUN php artisan config:cache`
