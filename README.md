@@ -22,6 +22,10 @@ FROM bfgasparin/laravel-apache:5-onbuild
 
 Put this file in the root of your app, next to the `composer.json`.
 
+Remove the command `php artisan optimize` from the post-install-cmd composer script. This command is already at the ONBUILD triggers.
+
+For development, you can run this command manually.
+
 This image includes the minimum packages for a Laravel project to work. It do not include database
 libraries or memcache libraries, for example. It's up to you to install these libraries. For
 example, if you are going to use PostgreSQL as database, you will need to install the libraries
@@ -49,8 +53,6 @@ The build will:
 * `ONBUILD COPY composer.json composer.lock artisan /var/www/html/`
 * `ONBUILD COPY database /var/www/html/database/`
 * `ONBUILD COPY bootstrap /var/www/html/bootstrap/`
-* `ONBUILD COPY config /var/www/html/config/`
-* `ONBUILD COPY app/Console/Kernel.php /var/www/html/app/Console/Kernel.php`
 * `ONBUILD RUN composer install --prefer-dist --optimize-autoloader --no-dev --profile -vvv`
 * `ONBUILD COPY . /var/www/html`
 * `ONBUILD RUN rm -Rf tests/`
