@@ -50,6 +50,7 @@ The build will:
 * `ONBUILD COPY database /var/www/html/database/`
 * `ONBUILD COPY bootstrap /var/www/html/bootstrap/`
 * `ONBUILD COPY config /var/www/html/config/`
+* `ONBUILD COPY app/Console/Kernel.php /var/www/html/app/Console/Kernel.php`
 * `ONBUILD RUN composer install --prefer-dist --optimize-autoloader --no-dev --profile -vvv`
 * `ONBUILD COPY . /var/www/html`
 * `ONBUILD RUN rm -Rf tests/`
