@@ -36,6 +36,8 @@ ENV PATH=/var/www/html/vendor/bin:$PATH
 
 ONBUILD COPY composer.json composer.lock artisan /var/www/html/
 ONBUILD COPY database /var/www/html/database/
+ONBUILD COPY bootstrap /var/www/html/bootstrap/
+ONBUILD COPY config /var/www/html/config/
 
 ONBUILD RUN composer install --prefer-dist --optimize-autoloader --no-dev --profile -vvv
 
