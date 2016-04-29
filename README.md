@@ -22,9 +22,6 @@ FROM bfgasparin/laravel-apache:5-onbuild
 
 Put this file in the root of your app, next to the `composer.json`.
 
-Remove the command `php artisan optimize` from the post-install-cmd composer script. This command is already at the ONBUILD triggers.
-
-For development, you can run this command manually.
 
 This image includes the minimum packages for a Laravel project to work. It do not include database
 libraries or memcache libraries, for example. It's up to you to install these libraries. For
@@ -52,16 +49,26 @@ The build will:
 
 * `ONBUILD COPY composer.json composer.lock artisan /var/www/html/`
 * `ONBUILD COPY database /var/www/html/database/`
-* `ONBUILD COPY bootstrap /var/www/html/bootstrap/`
-* `ONBUILD RUN composer install --prefer-dist --optimize-autoloader --no-dev --profile -vvv`
+* `ONBUILD RUN composer install --prefer-dist --optimize-autoloader --no-scripts --no-dev --profile -vvv`
 * `ONBUILD COPY . /var/www/html`
 * `ONBUILD RUN rm -Rf tests/`
+* `ONBUILD RUN composer run-script post-install-cmd`
 * `ONBUILD RUN php artisan clear-compiled`
 * `ONBUILD RUN php artisan optimize`
 * `ONBUILD RUN php artisan config:cache`
 * `ONBUILD RUN chown -R www-data:www-data /var/www/html/storage/`
 * `ONBUILD VOLUME /var/www/html/storage`
 
+Note that the images ignores the composer scripts when running `composer install` command, but run the `post-install-cmd` scripts
+later. `post-install-cmd` script must contains only tasks to be used for production deploy.
+
+Also, ff your application has custom a composer script, you should added into you Dockerfile:
+	
+```dockerfile
+FROM bfgasparin/laravel-apache:5-onbuild
+# ...
+RUN composer run-script my-custom-script`
+```
 
 The build also sets the default command to `apache2-foreground` to start apache2 service.
 
