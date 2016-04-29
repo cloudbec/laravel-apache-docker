@@ -36,14 +36,13 @@ ENV PATH=/var/www/html/vendor/bin:$PATH
 
 ONBUILD COPY composer.json composer.lock artisan /var/www/html/
 ONBUILD COPY database /var/www/html/database/
-ONBUILD COPY bootstrap /var/www/html/bootstrap/
 
-ONBUILD RUN composer install --prefer-dist --optimize-autoloader --no-dev --profile -vvv
+ONBUILD RUN composer install --prefer-dist --optimize-autoloader --no-scripts --no-dev --profile -vvv
 
 ONBUILD COPY . /var/www/html
 ONBUILD RUN rm -Rf tests/
 
-
+ONBUILD RUN composer run-script post-install-cmd
 ONBUILD RUN php artisan clear-compiled
 ONBUILD RUN php artisan optimize
 ONBUILD RUN php artisan config:cache
