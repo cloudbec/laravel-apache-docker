@@ -1,6 +1,4 @@
-# Laravel Base Image
-
-This image is a base imagem for Laravel application served by Apache with mod_php running **php 7**.
+# Laravel Base Image This image is a base imagem for Laravel application served by Apache with mod_php running **php 7**.
 
 ![logo PHP](php-logo.png) ![logo Laravel](laravel-logo.png) ![Apache](httpd-logo.png)
 
@@ -56,7 +54,10 @@ The build will:
 * `ONBUILD RUN php artisan clear-compiled`
 * `ONBUILD RUN php artisan optimize`
 * `ONBUILD RUN php artisan config:cache`
-* `ONBUILD RUN chown -R www-data:www-data /var/www/html/storage/`
+* `ONBUILD RUN chgrp -R www-data storage /var/www/html/bootstrap/cache`
+* `ONBUILD RUN chmod -R ug+rwx storage /var/www/html/bootstrap/cache`
+* `ONBUILD RUN chgrp -R www-data storage /var/www/html/storage`
+* `ONBUILD RUN chmod -R ug+rwx storage /var/www/html/storage `
 * `ONBUILD VOLUME /var/www/html/storage`
 
 Note that the images ignores the composer scripts when running `composer install` command, but run the `post-install-cmd` scripts

@@ -48,7 +48,11 @@ ONBUILD RUN php artisan optimize
 ONBUILD RUN php artisan config:cache
 
 # Configure directory permissions for the web server
-ONBUILD RUN chown -R www-data:www-data /var/www/html/storage/
+ONBUILD RUN chgrp -R www-data storage /var/www/html/bootstrap/cache
+ONBUILD RUN chmod -R ug+rwx storage /var/www/html/bootstrap/cache
+
+ONBUILD RUN chgrp -R www-data storage /var/www/html/storage
+ONBUILD RUN chmod -R ug+rwx storage /var/www/html/storage 
 
 # Configure data volume
 ONBUILD VOLUME /var/www/html/storage
