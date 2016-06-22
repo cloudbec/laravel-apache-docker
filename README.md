@@ -1,4 +1,6 @@
-# Laravel Base Image This image is a base imagem for Laravel application served by Apache with mod_php running **php 7**.
+# Laravel Base Image 
+
+This image is a base imagem for Laravel application served by Apache with mod_php running **php 7**.
 
 ![logo PHP](php-logo.png) ![logo Laravel](laravel-logo.png) ![Apache](httpd-logo.png)
 

@@ -23,8 +23,6 @@ RUN  rm /etc/apache2/sites-available/000-default.conf
 # Enable rewrite module
 RUN a2enmod rewrite
 
-RUN useradd -m -u 1000 artisan
-    
 WORKDIR /var/www/html
 
 # Download and Install Composer
