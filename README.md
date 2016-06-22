@@ -61,11 +61,11 @@ The build will:
 * `ONBUILD COPY database /var/www/html/database/`
 * `ONBUILD RUN composer install --prefer-dist --optimize-autoloader --no-scripts --no-dev --profile -vvv`
 * `ONBUILD COPY . /var/www/html`
-* `ONBUILD RUN rm -Rf tests/`
 * `ONBUILD RUN composer run-script post-install-cmd`
 * `ONBUILD RUN php artisan clear-compiled`
 * `ONBUILD RUN php artisan optimize`
 * `ONBUILD RUN php artisan config:cache`
+* `ONBUILD RUN php artisan migrate`
 * `ONBUILD RUN chgrp -R www-data storage /var/www/html/bootstrap/cache`
 * `ONBUILD RUN chmod -R ug+rwx storage /var/www/html/bootstrap/cache`
 * `ONBUILD RUN chgrp -R www-data storage /var/www/html/storage`
@@ -74,6 +74,7 @@ The build will:
 * `ONBUILD RUN npm install`
 * `ONBUILD RUN gulp --production`
 * `ONBUILD RUN rm -R /var/www/html/node_modules `
+* `ONBUILD RUN rm -Rf tests/`
 * `ONBUILD RUN rm /usr/local/bin/node \`
   `  && rm /usr/local/bin/npm \`
   `  && rm /usr/local/bin/gulp`
@@ -120,9 +121,10 @@ your production container:
 
 This cointainer will have all the an laravel application compiled for a production environment.
 
-This is done because during the build process:
+This is done because during the image build process, :
 
    - All php composer dependencies  (`gulpfile.json`) were installed
+   - Database was migrated
    - All frontend tasks (`gulpfile.js`) was executed for production environment  
 
 So the resulting image will be prepared to be runned into production.

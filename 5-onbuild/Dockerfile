@@ -72,11 +72,11 @@ ONBUILD COPY database /var/www/html/database/
 ONBUILD RUN composer install --prefer-dist --optimize-autoloader --no-scripts --no-dev --profile -vvv
 
 ONBUILD COPY . /var/www/html
-ONBUILD RUN rm -Rf tests/
 
 ONBUILD RUN php artisan clear-compiled
 ONBUILD RUN php artisan optimize
 ONBUILD RUN php artisan config:cache
+ONBUILD RUN php artisan migrate
 
 # Configure directory permissions for the web server
 ONBUILD RUN chgrp -R www-data storage /var/www/html/bootstrap/cache
@@ -94,8 +94,9 @@ ONBUILD RUN npm install
 # Run frontend tasks
 ONBUILD RUN gulp --production
 
-# We need node_modules no more
+# Transform into a lightweight image 
 ONBUILD RUN rm -R /var/www/html/node_modules 
+ONBUILD RUN rm -Rf tests/
     
 # We need node no more
 ONBUILD RUN rm /usr/local/bin/node \
