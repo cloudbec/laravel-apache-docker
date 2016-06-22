@@ -2,6 +2,17 @@
 
 This image is a base imagem for Laravel application served by Apache with mod_php running **php 7**.
 
+This image is a lightweight laravel app ready production image.
+
+## Stack
+
+- Apache 2 with PHP mod
+- PHP 7
+- Node 6.6.2 *(Used only to run frontend tasks. Removed from the final image)*
+
+
+See `How to use this image` section for more details.
+
 ![logo PHP](php-logo.png) ![logo Laravel](laravel-logo.png) ![Apache](httpd-logo.png)
 
 [PHP][1]
@@ -21,7 +32,6 @@ FROM brunogasparin/laravel-apache:5-onbuild
 ```
 
 Put this file in the root of your app, next to the `composer.json`.
-
 
 This image includes the minimum packages for a Laravel project to work. It do not include database
 libraries or memcache libraries, for example. It's up to you to install these libraries. For
@@ -61,11 +71,22 @@ The build will:
 * `ONBUILD RUN chgrp -R www-data storage /var/www/html/storage`
 * `ONBUILD RUN chmod -R ug+rwx storage /var/www/html/storage `
 * `ONBUILD VOLUME /var/www/html/storage`
+* `ONBUILD RUN npm install`
+* `ONBUILD RUN gulp --production`
+* `ONBUILD RUN rm -R /var/www/html/node_modules `
+* `ONBUILD RUN rm /usr/local/bin/node \`
+  `  && rm /usr/local/bin/npm \`
+  `  && rm /usr/local/bin/gulp`
+* `ONBUILD RUN apt-get remove -y \`
+  `  xz-utils \`
+  `  && apt-get clean \`
+  `  && rm -rf /var/lib/apt/lists/*l`
 
-Note that the images ignores the composer scripts when running `composer install` command, but run the `post-install-cmd` scripts
-later. `post-install-cmd` script must contains only tasks to be used for production deploy.
+Note that the images ignores the composer scripts when running `composer install` command, but run the `post-install-cmd` scripts.
 
-Also, ff your application has custom a composer script, you should added into you Dockerfile:
+This image also supposes you install your node dependecies into a folder named `node_modules`  inside your application root directory (the default node behavior). 
+
+Also, if your application has custom a composer script, you should added into you Dockerfile:
 	
 ```dockerfile
 FROM brunogasparin/laravel-apache:5-onbuild
@@ -85,9 +106,36 @@ $ docker run --name some-laravel-app -d my-laravel-app
 You can test it by visiting `http://container-ip` in a browser or, if you need access outside
 the daemon's host, on port 8080:
 
-    docker run --name some-laravel-app -p 8080:80 -d my-laravel-app
+    $ docker run --name some-laravel-app -p 8080:80 -d my-laravel-app
 
 You can then go to `http://localhost:8080` or `http://host-ip:8080` in a browser.
+
+## Ready for Production 
+
+When you build an image using this base image, the result can image can be used for
+your production container:
+
+    $ docker build -t my-production-laravel-app-image .
+    $ docker run --name my-producton-container -p 8080:80 -d my-production-laravel-app-image
+
+This cointainer will have all the an laravel application compiled for a production environment.
+
+This is done because during the build process:
+
+   - All php composer dependencies  (`gulpfile.json`) were installed
+   - All frontend tasks (`gulpfile.js`) was executed for production environment  
+
+So the resulting image will be prepared to be runned into production.
+
+| **Note:** Frontend issues are managed using **6.2.2 node version**.
+
+## But how can I use this image for Development
+
+For development, you`ll probably want to mount your source code into the container:
+
+    $ docker run --name my-producton-container -p 8080:80 -d my-production-laravel-app-image
+
+Using this configuration, you may need to run composer and gulpfile tasks manually.
 
 ### How to install more PHP extensions
 
