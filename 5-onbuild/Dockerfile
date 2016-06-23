@@ -76,7 +76,6 @@ ONBUILD COPY . /var/www/html
 ONBUILD RUN php artisan clear-compiled
 ONBUILD RUN php artisan optimize
 ONBUILD RUN php artisan config:cache
-ONBUILD RUN php artisan migrate
 
 # Configure directory permissions for the web server
 ONBUILD RUN chgrp -R www-data storage /var/www/html/bootstrap/cache

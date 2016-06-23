@@ -65,7 +65,6 @@ The build will:
 * `ONBUILD RUN php artisan clear-compiled`
 * `ONBUILD RUN php artisan optimize`
 * `ONBUILD RUN php artisan config:cache`
-* `ONBUILD RUN php artisan migrate`
 * `ONBUILD RUN chgrp -R www-data storage /var/www/html/bootstrap/cache`
 * `ONBUILD RUN chmod -R ug+rwx storage /var/www/html/bootstrap/cache`
 * `ONBUILD RUN chgrp -R www-data storage /var/www/html/storage`
@@ -124,7 +123,6 @@ This cointainer will have all the an laravel application compiled for a producti
 This is done because during the image build process, :
 
    - All php composer dependencies  (`gulpfile.json`) were installed
-   - Database was migrated
    - All frontend tasks (`gulpfile.js`) was executed for production environment  
 
 So the resulting image will be prepared to be runned into production.
