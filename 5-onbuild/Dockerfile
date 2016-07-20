@@ -18,7 +18,7 @@ COPY php/php.ini-production $PHP_INI_DIR/php.ini
 COPY apache/apache2.conf /etc/apache2/apache2.conf
 
 #  Configuring Apache
-RUN  rm /etc/apache2/sites-available/000-default.conf
+RUN  rm /etc/apache2/sites-available/000-default.conf \
          && rm /etc/apache2/sites-enabled/000-default.conf
 
 # Enable rewrite module
