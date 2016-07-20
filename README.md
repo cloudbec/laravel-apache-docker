@@ -60,6 +60,8 @@ The build will:
 * `ONBUILD COPY composer.json composer.lock artisan /var/www/html/`
 * `ONBUILD COPY database /var/www/html/database/`
 * `ONBUILD RUN composer install --prefer-dist --optimize-autoloader --no-scripts --no-dev --profile -vvv`
+* `ONBUILD COPY package.json /var/www/html/`
+* `ONBUILD RUN npm install`
 * `ONBUILD COPY . /var/www/html`
 * `ONBUILD RUN composer run-script post-install-cmd`
 * `ONBUILD RUN php artisan clear-compiled`
@@ -70,7 +72,6 @@ The build will:
 * `ONBUILD RUN chgrp -R www-data storage /var/www/html/storage`
 * `ONBUILD RUN chmod -R ug+rwx storage /var/www/html/storage `
 * `ONBUILD VOLUME /var/www/html/storage`
-* `ONBUILD RUN npm install`
 * `ONBUILD RUN gulp --production`
 * `ONBUILD RUN rm -R /var/www/html/node_modules `
 * `ONBUILD RUN rm -Rf tests/`

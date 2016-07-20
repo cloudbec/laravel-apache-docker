@@ -71,6 +71,9 @@ ONBUILD COPY database /var/www/html/database/
 
 ONBUILD RUN composer install --prefer-dist --optimize-autoloader --no-scripts --no-dev --profile -vvv
 
+ONBUILD COPY package.json /var/www/html/
+ONBUILD RUN npm install
+
 ONBUILD COPY . /var/www/html
 
 ONBUILD RUN php artisan clear-compiled
@@ -86,10 +89,6 @@ ONBUILD RUN chmod -R ug+rwx storage /var/www/html/storage
 
 # Configure data volume
 ONBUILD VOLUME /var/www/html/storage
-
-# Install frontend dependencies
-ONBUILD RUN npm install
-
 # Run frontend tasks
 ONBUILD RUN gulp --production
 
