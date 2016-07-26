@@ -59,7 +59,7 @@ The build will:
 
 * `ONBUILD COPY composer.json composer.lock artisan /var/www/html/`
 * `ONBUILD COPY database /var/www/html/database/`
-* `ONBUILD RUN composer install --prefer-dist --optimize-autoloader --no-scripts --no-dev --profile -vvv`
+* `ONBUILD RUN composer install --prefer-dist --optimize-autoloader --no-scripts --no-dev --profile --ignore-platform-reqs -vvv`
 * `ONBUILD COPY package.json /var/www/html/`
 * `ONBUILD RUN npm install`
 * `ONBUILD COPY . /var/www/html`
