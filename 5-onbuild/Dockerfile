@@ -101,10 +101,3 @@ ONBUILD RUN rm -Rf tests/
 ONBUILD RUN rm /usr/local/bin/node \
     && rm /usr/local/bin/npm \
     && rm /usr/local/bin/gulp
-    
-ONBUILD RUN apt-get remove -y \
-    xz-utils \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-
