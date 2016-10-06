@@ -89,7 +89,10 @@ ONBUILD RUN chgrp -R www-data storage /var/www/html/storage
 ONBUILD RUN chmod -R ug+rwx storage /var/www/html/storage 
 
 # Configure data volume
-ONBUILD VOLUME /var/www/html/storage
+ONBUILD VOLUME /var/www/html/storage/app
+ONBUILD VOLUME /var/www/html/storage/framework/sessions
+ONBUILD VOLUME /var/www/html/storage/logs
+
 # Run frontend tasks
 ONBUILD RUN gulp --production
 
