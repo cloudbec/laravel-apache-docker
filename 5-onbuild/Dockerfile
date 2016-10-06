@@ -105,4 +105,6 @@ ONBUILD RUN rm /usr/local/bin/node \
     && rm /usr/local/bin/npm \
     && rm /usr/local/bin/gulp
 
+COPY laravel-apache2-foreground /usr/local/bin/
+
 CMD ["laravel-apache2-foreground"]
