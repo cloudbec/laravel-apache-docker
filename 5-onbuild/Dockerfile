@@ -5,13 +5,13 @@ RUN apt-get update && apt-get install -y \
         zlib1g-dev \
         && apt-get clean \
         && rm -rf /var/lib/apt/lists/*
-        
+
 # Basic lumen packages
 RUN docker-php-ext-install \
         mcrypt \
         mbstring \
         tokenizer \
-        zip 
+        zip
 
 # Add php.ini for production
 COPY php/php.ini-production $PHP_INI_DIR/php.ini
@@ -86,7 +86,7 @@ ONBUILD RUN chgrp -R www-data storage /var/www/html/bootstrap/cache
 ONBUILD RUN chmod -R ug+rwx storage /var/www/html/bootstrap/cache
 
 ONBUILD RUN chgrp -R www-data storage /var/www/html/storage
-ONBUILD RUN chmod -R ug+rwx storage /var/www/html/storage 
+ONBUILD RUN chmod -R ug+rwx storage /var/www/html/storage
 
 # Configure data volume
 ONBUILD VOLUME /var/www/html/storage/app
@@ -96,11 +96,13 @@ ONBUILD VOLUME /var/www/html/storage/logs
 # Run frontend tasks
 ONBUILD RUN gulp --production
 
-# Transform into a lightweight image 
-ONBUILD RUN rm -R /var/www/html/node_modules 
+# Transform into a lightweight image
+ONBUILD RUN rm -R /var/www/html/node_modules
 ONBUILD RUN rm -Rf tests/
-    
+
 # We need node no more
 ONBUILD RUN rm /usr/local/bin/node \
     && rm /usr/local/bin/npm \
     && rm /usr/local/bin/gulp
+
+CMD ["laravel-apache2-foreground"]
