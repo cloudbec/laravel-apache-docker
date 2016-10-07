@@ -24,10 +24,6 @@ RUN  rm /etc/apache2/sites-available/000-default.conf \
 # Enable rewrite module
 RUN a2enmod rewrite
 
-# Enable ssl
-RUN a2enmod ssl
-EXPOSE 443
-
 WORKDIR /var/www/html
 
 # Download and Install Composer
